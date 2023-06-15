@@ -1,5 +1,7 @@
 package br.com.clinicaapi.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -11,19 +13,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table
-public class Aluno extends Usuario{
+public class Aluno extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotEmpty(message = "Campo CURSO é requerido!")
-	private String curso;
-
 	
+
 	public Aluno(Long id, String matricula, String nome, String tipoPerfil, String cpf, String endereco,
-			String telefone, String email, String senha, String curso) {
+			String telefone, String email, String senha, @NotEmpty(message = "Campo CURSO é requerido!") String curso) {
 		super(id, matricula, nome, tipoPerfil, cpf, endereco, telefone, email, senha);
 		this.curso = curso;
 	}
+
+    @NotEmpty(message = "Campo CURSO é requerido!")
+	private String curso;
+
+
 
 	public String getCurso() {
 		return curso;
@@ -33,6 +38,5 @@ public class Aluno extends Usuario{
 		this.curso = curso;
 	}
 
-
-	
+    
 }

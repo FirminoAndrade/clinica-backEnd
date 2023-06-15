@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.clinicaapi.entities.Usuario;
@@ -16,4 +17,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	List<Usuario> findAllDesc();
 
 	Optional<Usuario> findByEmail(String email);
+
+	@Query(nativeQuery = true, value = "select * from usuario where curso like (:curso)")
+	Optional<Usuario> findByNomeAlunoPorCurso(@Param(value = "curso") String curso);
 }

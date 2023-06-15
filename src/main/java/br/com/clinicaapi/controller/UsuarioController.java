@@ -33,8 +33,6 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
-
 
 	@GetMapping("/{id}")
 	@Operation(summary = "Buscar Usuário")
@@ -48,6 +46,13 @@ public class UsuarioController {
 	public ResponseEntity<Optional<Usuario>> buscarUsuarioPorEmail(@PathVariable String email) {
 		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 		return ResponseEntity.ok().body(usuario);
+	}
+
+	@GetMapping("/curso/{curso}")
+	@Operation(summary = "Buscar Aluno por Curso")
+	public ResponseEntity<Optional<Usuario>> listarNomesAlunosPorCurso(@PathVariable String curso) {
+		Optional<Usuario> alunos = usuarioRepository.findByNomeAlunoPorCurso(curso);
+		return ResponseEntity.ok().body(alunos);
 	}
 
 	@GetMapping

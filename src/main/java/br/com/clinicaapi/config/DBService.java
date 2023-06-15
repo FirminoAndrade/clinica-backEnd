@@ -56,8 +56,10 @@ public class DBService {
 		Usuario recepcionista = new Usuario(null, "3333", "Ada Wong de Mendes", "RECEPCIONISTA", "12387965236", "Av. Recon City","81736589858", "recepcao","recepcao");
 		usuarioRepository.saveAll(Arrays.asList(usuario,professor1,recepcionista));
 		
-		Aluno aluno1 = new Aluno(null, "2222", "Barry Batton de Souza", "ALUNO", "12547896521", "rua 20", "8178456955","aluno","aluno","enfermagem");
-		alunoRepository.saveAll(Arrays.asList(aluno1));
+		Aluno aluno1 = new Aluno(null, "2222", "Barry Batton de Souza", "ALUNO", "12547896521", "rua 20", "8178456955","aluno","aluno","Enfermagem");
+		Aluno aluno2 = new Aluno(null, "5555", "Maria de Souza Xavier", "ALUNO", "12547896522", "rua 20", "8178456955","aluno1","aluno1","Enfermagem");
+		Aluno aluno3 = new Aluno(null, "4444", "João da silva Souza", "ALUNO", "12547896523", "rua 20", "8178456955","aluno2","aluno2","Fisioterapia");
+		alunoRepository.saveAll(Arrays.asList(aluno1, aluno2, aluno3));
 		
 		Especialidade especialidade1 = new Especialidade(null, "Enfermagem", "Enfermagem");
 		Especialidade especialidade2 = new Especialidade(null, "Nutrição", "Nutrição");

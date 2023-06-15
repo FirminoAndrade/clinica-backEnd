@@ -17,6 +17,7 @@ public class AgendaDto {
 	private String fone;
 	private String especialidade;
 	private String nomeAluno;
+	private boolean presenca;
 	
 	public AgendaDto(Agenda agenda) {
 		this.id = agenda.getId();
@@ -26,5 +27,6 @@ public class AgendaDto {
 		this.fone = agenda.getFone();
 		this.especialidade = agenda.getEspecialidade();
 		this.nomeAluno = agenda.getNomeAluno();
+		this.presenca = agenda.isPresenca();
 	}
 }

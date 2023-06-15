@@ -43,6 +43,7 @@ public class AgendaService {
 
 	public Agenda criarAgenda(Long id_paciente, Agenda agenda) {
 		agenda.setId(null);
+		agenda.setPresenca(true);
 		Paciente paciente = pacienteService.findById(id_paciente);
 		agenda.setPaciente(paciente);
 		return agendaRepository.save(agenda);

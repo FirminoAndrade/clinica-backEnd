@@ -43,6 +43,8 @@ public class Agenda {
 
 	private String nomeAluno;
 	
+	private boolean presenca;
+	
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "paciente_id")

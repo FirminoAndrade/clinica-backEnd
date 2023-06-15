@@ -48,6 +48,13 @@ public class AlunoController {
 		return AlunoService.listarAlunos(alunos);
 	}
 
+	@GetMapping("/curso/{curso}")
+	@Operation(summary = "Buscar Aluno por Curso")
+	public  List<AlunoDto> listarNomesAlunosPorCurso(@PathVariable String curso) {
+		List<Aluno> alunos = alunoRepository.findByNomeAlunoPorCurso(curso);
+		return AlunoService.listarAlunos(alunos);
+	}
+
 	@PostMapping
 	@Operation(summary = "Cadastrar Aluno")
 	public ResponseEntity<Aluno> cadastrarAluno(@Valid @RequestBody Aluno aluno) {
@@ -57,8 +64,7 @@ public class AlunoController {
 
 	@PutMapping("/{id}")
 	@Operation(summary = "Atualizar Aluno")
-	public ResponseEntity<AlunoDto> atualizarAluno(@Valid @PathVariable Long id,
-			@RequestBody AlunoDto alunoDto) {
+	public ResponseEntity<AlunoDto> atualizarAluno(@Valid @PathVariable Long id, @RequestBody AlunoDto alunoDto) {
 		Aluno aluno = alunoService.atualizarAluno(id, alunoDto);
 		return ResponseEntity.ok(new AlunoDto(aluno));
 	}
