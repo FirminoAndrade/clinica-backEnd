@@ -6,7 +6,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.clinicaapi.dto.UsuarioDto;
@@ -33,6 +36,9 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+
+	@Autowired
+	private PasswordEncoder encoder;
 
 	@GetMapping("/{id}")
 	@Operation(summary = "Buscar Usuário")
@@ -65,6 +71,7 @@ public class UsuarioController {
 	@PostMapping
 	@Operation(summary = "Cadastrar Usuário")
 	public ResponseEntity<Usuario> cadastrarUsuario(@Valid @RequestBody Usuario usuario) {
+		usuario.setSenha(encoder.encode(usuario.getSenha()));
 		usuario = usuarioService.criarUsuario(usuario);
 		return ResponseEntity.ok().body(usuario);
 	}
@@ -73,6 +80,7 @@ public class UsuarioController {
 	@Operation(summary = "Atualizar Usuário")
 	public ResponseEntity<UsuarioDto> atualizarUsuario(@Valid @PathVariable Long id,
 			@RequestBody UsuarioDto usuarioDto) {
+		usuarioDto.setSenha(encoder.encode(usuarioDto.getSenha()));
 		Usuario usuario = usuarioService.atualizarUsuario(id, usuarioDto);
 		return ResponseEntity.ok(new UsuarioDto(usuario));
 	}
@@ -82,5 +90,18 @@ public class UsuarioController {
 	public ResponseEntity<?> deletarUsuario(@PathVariable Long id) {
 		usuarioService.deleteUsuario(id);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/validarSenha")
+	@Operation(summary = "Listar Usuários")
+	public ResponseEntity<Boolean> validarSenha(@RequestParam String email, @RequestParam String senha) {
+		Optional<Usuario> optional = usuarioRepository.findByEmail(email);
+		if (optional.isEmpty()) {
+			ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+		}
+		Usuario usuario = optional.get();
+		boolean valid = encoder.matches(senha, usuario.getSenha());
+		HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+		return ResponseEntity.status(status).body(valid);
 	}
 }
