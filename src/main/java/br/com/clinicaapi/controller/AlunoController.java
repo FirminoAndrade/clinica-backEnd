@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,9 @@ public class AlunoController {
 
 	@Autowired
 	private AlunoService alunoService;
+	
+	@Autowired
+	private PasswordEncoder encoder;
 
 	@GetMapping("/{id}")
 	@Operation(summary = "Buscar Aluno")
@@ -58,6 +62,7 @@ public class AlunoController {
 	@PostMapping
 	@Operation(summary = "Cadastrar Aluno")
 	public ResponseEntity<Aluno> cadastrarAluno(@Valid @RequestBody Aluno aluno) {
+		aluno.setSenha(encoder.encode(aluno.getSenha()));
 		aluno = alunoService.criarAluno(aluno);
 		return ResponseEntity.ok().body(aluno);
 	}
@@ -65,6 +70,7 @@ public class AlunoController {
 	@PutMapping("/{id}")
 	@Operation(summary = "Atualizar Aluno")
 	public ResponseEntity<AlunoDto> atualizarAluno(@Valid @PathVariable Long id, @RequestBody AlunoDto alunoDto) {
+		alunoDto.setSenha(encoder.encode(alunoDto.getSenha()));
 		Aluno aluno = alunoService.atualizarAluno(id, alunoDto);
 		return ResponseEntity.ok(new AlunoDto(aluno));
 	}
